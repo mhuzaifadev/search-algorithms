@@ -2,29 +2,15 @@
 
 <table style="border-collapse: collapse; border: nonenone!important;">
   <tr>
-    <td style="border: none; width: 70%;">
+    <td style="border: none; width: 60%;">
       <p>This repository contains implementations of various search algorithms in different programming languages. The algorithms are designed to solve different types of search problems efficiently. Each algorithm is implemented in multiple languages, including <strong>Python3, Java, C++, C#, R, Swift, JavaScript, and Rust</strong>, to make it easy for developers to understand and use them in their projects.</p>
     </td>
-    <td style="border: none; width: 30%;">
+    <td style="border: none; width: 40%;">
       <img src="https://cdn.pixabay.com/animation/2022/08/06/11/57/11-57-26-645_512.gif" alt="Search" style="max-width: 100%;">
     </td>
   </tr>
 </table>
 
-
-
-<style>
-table {
-    border-collapse: collapse;
-}
-table, th, td {
-   border: 1px solid black;
-}
-blockquote {
-    border-left: solid blue;
-    padding-left: 10px;
-}
-</style>
 
 [![Search](https://cdn.pixabay.com/animation/2022/08/06/11/57/11-57-26-645_512.gif)](https://github.com/mhuzaifadev/search-algorithms)
 
