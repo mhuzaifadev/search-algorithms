@@ -1,15 +1,16 @@
 # Search Algorithms Repository
 
-<table>
+<table style="border-collapse: collapse;">
   <tr>
-    <td width="70%">
+    <td style="border: none; width: 70%;">
       <p>This repository contains implementations of various search algorithms in different programming languages. The algorithms are designed to solve different types of search problems efficiently. Each algorithm is implemented in multiple languages, including <strong>Python3, Java, C++, C#, R, Swift, JavaScript, and Rust</strong>, to make it easy for developers to understand and use them in their projects.</p>
     </td>
-    <td width="30%">
+    <td style="border: none; width: 30%;">
       <img src="https://cdn.pixabay.com/animation/2022/08/06/11/57/11-57-26-645_512.gif" alt="Search" style="max-width: 100%;">
     </td>
   </tr>
 </table>
+
 
 
 
