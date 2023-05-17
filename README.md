@@ -13,7 +13,18 @@
 
 
 
-
+<style>
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+   border: 1px solid black;
+}
+blockquote {
+    border-left: solid blue;
+    padding-left: 10px;
+}
+</style>
 
 [![Search](https://cdn.pixabay.com/animation/2022/08/06/11/57/11-57-26-645_512.gif)](https://github.com/mhuzaifadev/search-algorithms)
 
