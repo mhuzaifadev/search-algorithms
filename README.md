@@ -20,7 +20,7 @@
 | **Binary Search**                     | An efficient algorithm that divides a sorted list into two halves and narrows down the search range by comparing values.| O(log n)  |
 | **Depth-First Search (DFS)**           | A graph traversal algorithm that explores as far as possible along each branch before backtracking.                    | O(V + E)  |
 | **Breadth-First Search (BFS)**         | Another graph traversal algorithm that explores all vertices at the same depth level before moving to the next level.  | O(V + E)  |
-| **A* Search**                         | An informed search algorithm that uses heuristics to efficiently search for a path between nodes in a graph.           | O(b^d)    |
+| **A Search**                         | An informed search algorithm that uses heuristics to efficiently search for a path between nodes in a graph.           | O(b^d)    |
 | **Uniform-Cost Search (UCS)**          | A graph search algorithm that explores the least-cost path by assigning a cost to each edge.                           | O((V + E) log V) |
 | **Dijkstra's Algorithm**              | A popular algorithm for finding the shortest path between nodes in a graph with non-negative edge weights.             | O((V + E) log V) |
 | **Iterative Deepening DFS (IDDFS)**    | A combination of depth-first search and breadth-first search that gradually increases the depth limit until the goal is found. | O(b^d) |
