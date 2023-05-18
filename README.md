@@ -1,4 +1,4 @@
-# Search Algorithms Repository
+# **Search Algorithms Repository**
 
 <table style="border-collapse: collapse; border: nonenone!important;">
   <tr>
