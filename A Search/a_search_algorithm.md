@@ -1,4 +1,4 @@
-# **Breadth-First Search (DFS) Algorithm**
+# **A * Search (DFS) Algorithm**
 
     Input: Graph (adjacency list or matrix), start vertex, goal vertex, heuristic function
     Output: Optimal path from start to goal
