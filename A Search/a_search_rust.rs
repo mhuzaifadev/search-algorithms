@@ -1,4 +1,4 @@
-// Breadth First Search in Rust
+// A* Search in Rust
 
 use std::collections::{BinaryHeap, HashMap, HashSet};
 
