@@ -1,4 +1,4 @@
-//Breadth First Search in C# (C Sharp)
+//A* Search in C# (C Sharp)
 
 using System;
 using System.Collections.Generic;
