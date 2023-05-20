@@ -1,4 +1,4 @@
-// Breadth First Search in C++
+// A* Search in C++
 
 #include <iostream>
 #include <vector>
