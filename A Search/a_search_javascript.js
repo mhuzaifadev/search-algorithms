@@ -1,4 +1,4 @@
-// Breadth First Search in JavaScript
+// A* Search in JavaScript
 
 class Node {
     constructor(vertex, priority) {
