@@ -1,26 +1,43 @@
-# Breadth First Search in Python
+# A*Breadth First Search in Python
 
-from collections import deque
+import heapq
 
-def bfs(graph, start):
-    queue = deque([start])  # Create an empty queue and enqueue the starting vertex
+def astar(graph, start, goal, heuristic):
+    priority_queue = [(0, start)]  # Create an empty priority queue and enqueue the start vertex
     visited = set()  # Create an empty set to track visited vertices
+    cost_so_far = {start: 0}  # Create a dictionary to track the cost to reach each vertex
 
-    while queue:
-        vertex = queue.popleft()  # Dequeue a vertex from the queue
+    while priority_queue:
+        _, vertex = heapq.heappop(priority_queue)  # Dequeue a vertex with the lowest priority from the priority queue
+
+        if vertex == goal:  # If the vertex is the goal vertex, the optimal path has been found
+            break
 
         if vertex not in visited:  # If the vertex has not been visited
             visited.add(vertex)  # Mark the vertex as visited
-            process_vertex(vertex)  # Process the vertex (e.g., print it, add it to a result list)
 
-            # Enqueue all unvisited neighbors of the vertex
             for neighbor in graph[vertex]:
-                if neighbor not in visited:
-                    queue.append(neighbor)
+                new_cost = cost_so_far[vertex] + graph[vertex][neighbor]  # Calculate the cost to reach the neighbor from the start vertex
+
+                if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
+                    cost_so_far[neighbor] = new_cost
+                    priority = new_cost + heuristic(neighbor, goal)  # Calculate the priority (cost + heuristic)
+                    heapq.heappush(priority_queue, (priority, neighbor))  # Enqueue the neighbor onto the priority queue with the calculated priority
+
+    return reconstruct_path(start, goal, cost_so_far)  # Return the optimal path
+
+def reconstruct_path(start, goal, cost_so_far):
+    path = [goal]
+    current = goal
+
+    while current != start:
+        neighbors = cost_so_far[current]
+        next_node = min(neighbors, key=lambda x: cost_so_far[x])
+        path.append(next_node)
+        current = next_node
+
+    path.reverse()
+    return path
 
 
-# Please note that the process_vertex function is
-# placeholder functions and need to be replaced with your specific logic to 
-# handle the processing of each vertex.
 
-# I hope this helps! Let me know if you need further assistance.
