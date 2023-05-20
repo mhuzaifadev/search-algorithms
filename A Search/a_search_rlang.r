@@ -1,4 +1,4 @@
-# Breadth First Search in R Language
+# A* Search in R Language
 
 astar <- function(graph, start, goal, heuristic) {
   priority_queue <- list()  # Create an empty priority queue
