@@ -1,4 +1,4 @@
-// Breadth First Search in Swift
+// A* Search in Swift
 
 import Foundation
 
