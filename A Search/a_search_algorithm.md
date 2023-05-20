@@ -1,16 +1,15 @@
 # **Breadth-First Search (DFS) Algorithm**
 
-    Input: Graph (adjacency list or matrix), starting vertex
-    Output: Visited vertices in BFS order
+    Input: Graph (adjacency list or matrix), start vertex, goal vertex, heuristic function
+    Output: Optimal path from start to goal
 
-    Create an empty queue and an empty set to track visited vertices.
-    
-    Enqueue the starting vertex onto the queue.
-    
-    While the queue is not empty:
-    - Dequeue a vertex from the queue.
-    - If the vertex has not been visited:
-        * Mark the vertex as visited.
-        * Process the vertex (e.g., print it, add it to a result list).
-        * Enqueue all unvisited neighbors of the vertex.
-    Repeat steps 3-4 until the queue is empty.
+    Create an empty priority queue and an empty set to track visited vertices.
+    Enqueue the start vertex onto the priority queue with a priority of 0.
+    While the priority queue is not empty:
+        - Dequeue a vertex with the lowest priority from the priority queue.
+        - If the vertex is the goal vertex, the optimal path has been found.
+        - Mark the vertex as visited.
+        - For each unvisited neighbor of the vertex:
+            * Calculate the cost to reach the neighbor from the start vertex.
+            * Enqueue the neighbor onto the priority queue with the calculated priority (cost + heuristic).
+    Repeat steps 3-5 until the priority queue is empty or the goal vertex is reached.
