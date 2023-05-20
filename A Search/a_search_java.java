@@ -1,4 +1,4 @@
-// Breadth First Search in Java
+// A* Search in Java
 
 import java.util.*;
 
