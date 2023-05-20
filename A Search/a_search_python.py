@@ -1,4 +1,4 @@
-# A*Breadth First Search in Python
+# A* Search in Python
 
 import heapq
 
