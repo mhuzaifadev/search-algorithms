@@ -1,4 +1,4 @@
-# A* Search in R Language
+# Uniform Cost Search in R Language
 
 # Install the priorityqueue package if not already installed
 # install.packages("priorityqueue")
