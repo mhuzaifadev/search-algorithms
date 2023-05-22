@@ -1,4 +1,4 @@
-// A* Search in Swift
+// Uniform Cost Search in Swift
 
 import Foundation
 
