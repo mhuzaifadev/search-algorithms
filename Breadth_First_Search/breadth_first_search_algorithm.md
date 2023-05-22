@@ -1,4 +1,4 @@
-# **Breadth-First Search (DFS) Algorithm**
+# **Breadth-First Search (BFS) Algorithm**
 
     Input: Graph (adjacency list or matrix), starting vertex
     Output: Visited vertices in BFS order
