@@ -1,4 +1,4 @@
-# A* Search in Python
+# Uniform Cost Search in Python
 
 import heapq
 
