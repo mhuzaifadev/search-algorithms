@@ -1,4 +1,4 @@
-// A* Search in Rust
+// Uniform Cost Search in Rust
 
 use std::cmp::Reverse;
 use std::collections::{BinaryHeap, HashMap};
