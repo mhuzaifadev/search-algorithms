@@ -1,4 +1,4 @@
-// A* Search in C++
+// Uniform Cost Search in C++
 
 #include <queue>
 #include <unordered_map>
