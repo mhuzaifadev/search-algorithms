@@ -1,4 +1,4 @@
-//A* Search in C# (C Sharp)
+//Uniform Cost Search in C# (C Sharp)
 
 using System;
 using System.Collections.Generic;
