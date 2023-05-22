@@ -1,4 +1,4 @@
-// A* Search in JavaScript
+// Uniform Cost Search in JavaScript
 
 class Node {
     constructor(vertex, cost) {
