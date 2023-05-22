@@ -1,4 +1,4 @@
-# **A * Search (DFS) Algorithm**
+# **Uniform-Cost Search (UCS) Algorithm**
 
     Create an empty priority queue.
     
