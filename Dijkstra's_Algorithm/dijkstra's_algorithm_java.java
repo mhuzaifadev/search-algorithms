@@ -2,70 +2,70 @@
 
 import java.util.*;
 
-class Node implements Comparable<Node> {
-    int vertex;
-    int cost;
-
-    public Node(int vertex, int cost) {
-        this.vertex = vertex;
-        this.cost = cost;
-    }
-
-    public int compareTo(Node other) {
-        return Integer.compare(this.cost, other.cost);
-    }
-}
-
-public class UCS {
-    public List<Integer> ucs(Map<Integer, Map<Integer, Integer>> graph, int start, int goal) {
+public class Dijkstra {
+    public static Map<Integer, Integer> dijkstra(Map<Integer, Map<Integer, Integer>> graph, int start) {
+        Map<Integer, Integer> distances = new HashMap<>();
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
         Set<Integer> visited = new HashSet<>();
-        Map<Integer, Integer> costSoFar = new HashMap<>();
-        Map<Integer, Integer> cameFrom = new HashMap<>();
+
+        // Initialize distances with infinity except for the start node
+        for (int node : graph.keySet()) {
+            distances.put(node, Integer.MAX_VALUE);
+        }
+        distances.put(start, 0);
 
         priorityQueue.offer(new Node(start, 0));
-        costSoFar.put(start, 0);
 
         while (!priorityQueue.isEmpty()) {
-            Node node = priorityQueue.poll();
-            int vertex = node.vertex;
+            Node current = priorityQueue.poll();
+            int currentNode = current.getNode();
 
-            if (vertex == goal) {
-                break;
+            // Skip if the current node has already been visited
+            if (visited.contains(currentNode)) {
+                continue;
             }
 
-            if (!visited.contains(vertex)) {
-                visited.add(vertex);
+            visited.add(currentNode);
 
-                for (Map.Entry<Integer, Integer> neighbor : graph.get(vertex).entrySet()) {
-                    int neighborVertex = neighbor.getKey();
-                    int cost = neighbor.getValue();
-                    int newCost = costSoFar.get(vertex) + cost;
+            // Explore neighbors of the current node
+            for (Map.Entry<Integer, Integer> neighbor : graph.get(currentNode).entrySet()) {
+                int neighborNode = neighbor.getKey();
+                int weight = neighbor.getValue();
+                int distance = distances.get(currentNode) + weight;
 
-                    if (!costSoFar.containsKey(neighborVertex) || newCost < costSoFar.get(neighborVertex)) {
-                        costSoFar.put(neighborVertex, newCost);
-                        priorityQueue.offer(new Node(neighborVertex, newCost));
-                        cameFrom.put(neighborVertex, vertex);
-                    }
+                // Update distance if a shorter path is found
+                if (distance < distances.get(neighborNode)) {
+                    distances.put(neighborNode, distance);
+                    priorityQueue.offer(new Node(neighborNode, distance));
                 }
             }
         }
 
-        return reconstructPath(start, goal, cameFrom);
+        return distances;
     }
 
-    private List<Integer> reconstructPath(int start, int goal, Map<Integer, Integer> cameFrom) {
-        List<Integer> path = new ArrayList<>();
-        int current = goal;
+    private static class Node implements Comparable<Node> {
+        private final int node;
+        private final int distance;
 
-        while (current != start) {
-            path.add(current);
-            current = cameFrom.get(current);
+        public Node(int node, int distance) {
+            this.node = node;
+            this.distance = distance;
         }
 
-        path.add(start);
-        Collections.reverse(path);
-        return path;
+        public int getNode() {
+            return node;
+        }
+
+        public int getDistance() {
+            return distance;
+        }
+
+        @Override
+        public int compareTo(Node other) {
+            return Integer.compare(this.distance, other.distance);
+        }
     }
 }
+
 
