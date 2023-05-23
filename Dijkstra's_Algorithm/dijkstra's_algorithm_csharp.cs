@@ -2,82 +2,64 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-public class UCS
+public class Dijkstra
 {
-    public List<int> Ucs(Dictionary<int, Dictionary<int, int>> graph, int start, int goal)
+    public static Dictionary<int, int> DijkstraAlgorithm(Dictionary<int, Dictionary<int, int>> graph, int start)
     {
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>();
-        HashSet<int> visited = new HashSet<int>();
-        Dictionary<int, int> costSoFar = new Dictionary<int, int>();
-        Dictionary<int, int> cameFrom = new Dictionary<int, int>();
+        Dictionary<int, int> distances = new Dictionary<int, int>();
+        foreach (int node in graph.Keys)
+        {
+            distances[node] = int.MaxValue;
+        }
+        distances[start] = 0;
 
-        priorityQueue.Enqueue(new Node(start, 0));
-        costSoFar[start] = 0;
+        SortedSet<Node> priorityQueue = new SortedSet<Node>();
+        priorityQueue.Add(new Node(start, 0));
 
         while (priorityQueue.Count > 0)
         {
-            Node node = priorityQueue.Dequeue();
-            int vertex = node.Vertex;
+            Node current = priorityQueue.Min;
+            priorityQueue.Remove(current);
 
-            if (vertex == goal)
+            if (current.Distance > distances[current.Vertex])
             {
-                break;
+                continue;
             }
 
-            if (!visited.Contains(vertex))
+            foreach (var neighbor in graph[current.Vertex])
             {
-                visited.Add(vertex);
+                int neighborNode = neighbor.Key;
+                int weight = neighbor.Value;
+                int distance = distances[current.Vertex] + weight;
 
-                foreach (KeyValuePair<int, int> neighbor in graph[vertex])
+                if (distance < distances[neighborNode])
                 {
-                    int neighborVertex = neighbor.Key;
-                    int cost = neighbor.Value;
-                    int newCost = costSoFar[vertex] + cost;
-
-                    if (!costSoFar.ContainsKey(neighborVertex) || newCost < costSoFar[neighborVertex])
-                    {
-                        costSoFar[neighborVertex] = newCost;
-                        priorityQueue.Enqueue(new Node(neighborVertex, newCost));
-                        cameFrom[neighborVertex] = vertex;
-                    }
+                    priorityQueue.RemoveWhere(n => n.Vertex == neighborNode);
+                    distances[neighborNode] = distance;
+                    priorityQueue.Add(new Node(neighborNode, distance));
                 }
             }
         }
 
-        return ReconstructPath(start, goal, cameFrom);
+        return distances;
     }
 
-    private List<int> ReconstructPath(int start, int goal, Dictionary<int, int> cameFrom)
+    private class Node : IComparable<Node>
     {
-        List<int> path = new List<int>();
-        int current = goal;
+        public int Vertex { get; }
+        public int Distance { get; }
 
-        while (current != start)
+        public Node(int vertex, int distance)
         {
-            path.Add(current);
-            current = cameFrom[current];
+            Vertex = vertex;
+            Distance = distance;
         }
 
-        path.Add(start);
-        path.Reverse();
-        return path;
-    }
-}
-
-public class Node : IComparable<Node>
-{
-    public int Vertex { get; }
-    public int Cost { get; }
-
-    public Node(int vertex, int cost)
-    {
-        Vertex = vertex;
-        Cost = cost;
-    }
-
-    public int CompareTo(Node other)
-    {
-        return Cost.CompareTo(other.Cost);
+        public int CompareTo(Node other)
+        {
+            return Distance.CompareTo(other.Distance);
+        }
     }
 }
