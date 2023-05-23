@@ -1,63 +1,71 @@
 // Uniform Cost Search in C++
 
+#include <iostream>
 #include <queue>
-#include <unordered_map>
 #include <vector>
+#include <unordered_map>
+#include <limits>
 
-struct Node {
+using namespace std;
+
+class Node {
+public:
     int vertex;
-    int cost;
+    int distance;
 
-    Node(int vertex, int cost) : vertex(vertex), cost(cost) {}
+    Node(int v, int d) : vertex(v), distance(d) {}
 
-    bool operator<(const Node& other) const {
-        return cost > other.cost;
+    bool operator>(const Node& other) const {
+        return distance > other.distance;
     }
 };
 
-std::vector<int> ucs(const std::unordered_map<int, std::unordered_map<int, int>>& graph, int start, int goal) {
-    std::priority_queue<Node> priorityQueue;
-    std::unordered_map<int, int> costSoFar;
-    std::unordered_map<int, int> cameFrom;
+unordered_map<int, int> dijkstra(unordered_map<int, unordered_map<int, int>>& graph, int start) {
+    unordered_map<int, int> distances;
+    priority_queue<Node, vector<Node>, greater<Node>> pq;
 
-    priorityQueue.emplace(start, 0);
-    costSoFar[start] = 0;
+    for (const auto& pair : graph) {
+        distances[pair.first] = numeric_limits<int>::max();
+    }
+    distances[start] = 0;
 
-    while (!priorityQueue.empty()) {
-        Node node = priorityQueue.top();
-        priorityQueue.pop();
-        int vertex = node.vertex;
+    pq.emplace(start, 0);
 
-        if (vertex == goal) {
-            break;
+    while (!pq.empty()) {
+        Node current = pq.top();
+        pq.pop();
+
+        if (current.distance > distances[current.vertex]) {
+            continue;
         }
 
-        for (const auto& neighbor : graph.at(vertex)) {
+        for (const auto& neighbor : graph[current.vertex]) {
             int neighborVertex = neighbor.first;
-            int cost = neighbor.second;
-            int newCost = costSoFar[vertex] + cost;
+            int weight = neighbor.second;
+            int distance = current.distance + weight;
 
-            if (!costSoFar.count(neighborVertex) || newCost < costSoFar[neighborVertex]) {
-                costSoFar[neighborVertex] = newCost;
-                priorityQueue.emplace(neighborVertex, newCost);
-                cameFrom[neighborVertex] = vertex;
+            if (distance < distances[neighborVertex]) {
+                distances[neighborVertex] = distance;
+                pq.emplace(neighborVertex, distance);
             }
         }
     }
 
-    return reconstructPath(start, goal, cameFrom);
+    return distances;
 }
 
-std::vector<int> reconstructPath(int start, int goal, const std::unordered_map<int, int>& cameFrom) {
-    std::vector<int> path;
-    int current = goal;
+int main() {
+    unordered_map<int, unordered_map<int, int>> graph;
+    graph[0] = {{1, 4}, {2, 1}};
+    graph[1] = {{3, 1}};
+    graph[2] = {{1, 2}, {3, 5}};
+    graph[3] = {};
 
-    while (current != start) {
-        path.push_back(current);
-        current = cameFrom.at(current);
+    unordered_map<int, int> distances = dijkstra(graph, 0);
+
+    for (const auto& pair : distances) {
+        cout << "Distance from 0 to " << pair.first << " : " << pair.second << endl;
     }
 
-    path.push_back(start);
-    std::reverse(path.begin(), path.end());
-    return path;
+    return 0;
 }
