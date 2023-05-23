@@ -2,39 +2,28 @@
 
 import heapq
 
-def ucs(graph, start, goal):
+def dijkstra(graph, start):
+    # Initialize distances with infinity except for the start node
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+
+    # Priority queue to store nodes with their minimum distances
     priority_queue = [(0, start)]
-    visited = set()
-    cost_so_far = {start: 0}
-    came_from = {}
 
     while priority_queue:
-        _, node = heapq.heappop(priority_queue)
+        current_distance, current_node = heapq.heappop(priority_queue)
 
-        if node == goal:
-            break
+        # Skip if the current node has already been visited
+        if current_distance > distances[current_node]:
+            continue
 
-        if node not in visited:
-            visited.add(node)
+        # Explore neighbors of the current node
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
 
-            for neighbor, cost in graph[node].items():
-                new_cost = cost_so_far[node] + cost
+            # Update distance if a shorter path is found
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(priority_queue, (distance, neighbor))
 
-                if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]:
-                    cost_so_far[neighbor] = new_cost
-                    heapq.heappush(priority_queue, (new_cost, neighbor))
-                    came_from[neighbor] = node
-
-    return reconstruct_path(start, goal, came_from)
-
-def reconstruct_path(start, goal, came_from):
-    path = []
-    current = goal
-
-    while current != start:
-        path.append(current)
-        current = came_from[current]
-
-    path.append(start)
-    path.reverse()
-    return path
+    return distances
