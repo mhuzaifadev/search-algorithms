@@ -1,78 +1,51 @@
 // Uniform Cost Search in JavaScript
 
-class Node {
-    constructor(vertex, cost) {
-      this.vertex = vertex;
-      this.cost = cost;
-    }
+class PriorityQueue {
+  constructor() {
+    this.queue = [];
   }
-  
-  class PriorityQueue {
-    constructor() {
-      this.queue = [];
-    }
-  
-    enqueue(node) {
-      this.queue.push(node);
-      this.queue.sort((a, b) => a.cost - b.cost);
-    }
-  
-    dequeue() {
-      return this.queue.shift();
-    }
-  
-    isEmpty() {
-      return this.queue.length === 0;
-    }
+
+  enqueue(node) {
+    this.queue.push(node);
+    this.queue.sort((a, b) => a.distance - b.distance);
   }
-  
-  function ucs(graph, start, goal) {
-    const priorityQueue = new PriorityQueue();
-    const visited = new Set();
-    const costSoFar = {};
-    const cameFrom = {};
-  
-    priorityQueue.enqueue(new Node(start, 0));
-    costSoFar[start] = 0;
-  
-    while (!priorityQueue.isEmpty()) {
-      const node = priorityQueue.dequeue();
-      const vertex = node.vertex;
-  
-      if (vertex === goal) {
-        break;
-      }
-  
-      if (!visited.has(vertex)) {
-        visited.add(vertex);
-  
-        const neighbors = graph[vertex];
-        for (const neighbor in neighbors) {
-          const cost = neighbors[neighbor];
-          const newCost = (costSoFar[vertex] || 0) + cost;
-  
-          if (!costSoFar.hasOwnProperty(neighbor) || newCost < costSoFar[neighbor]) {
-            costSoFar[neighbor] = newCost;
-            priorityQueue.enqueue(new Node(neighbor, newCost));
-            cameFrom[neighbor] = vertex;
-          }
-        }
+
+  dequeue() {
+    return this.queue.shift();
+  }
+
+  isEmpty() {
+    return this.queue.length === 0;
+  }
+}
+
+function dijkstra(graph, start) {
+  const distances = {};
+  const priorityQueue = new PriorityQueue();
+
+  for (const node in graph) {
+    distances[node] = Infinity;
+  }
+  distances[start] = 0;
+
+  priorityQueue.enqueue({ vertex: start, distance: 0 });
+
+  while (!priorityQueue.isEmpty()) {
+    const { vertex, distance } = priorityQueue.dequeue();
+
+    if (distance > distances[vertex]) {
+      continue;
+    }
+
+    for (const neighbor in graph[vertex]) {
+      const neighborDistance = distance + graph[vertex][neighbor];
+
+      if (neighborDistance < distances[neighbor]) {
+        distances[neighbor] = neighborDistance;
+        priorityQueue.enqueue({ vertex: neighbor, distance: neighborDistance });
       }
     }
-  
-    return reconstructPath(start, goal, cameFrom);
   }
-  
-  function reconstructPath(start, goal, cameFrom) {
-    const path = [];
-    let current = goal;
-  
-    while (current !== start) {
-      path.push(current);
-      current = cameFrom[current];
-    }
-  
-    path.push(start);
-    return path.reverse();
-  }
-  
+
+  return distances;
+}
