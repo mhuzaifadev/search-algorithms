@@ -1,77 +1,74 @@
 // Uniform Cost Search in Rust
 
-use std::cmp::Reverse;
-use std::collections::{BinaryHeap, HashMap};
+use std::cmp::Ordering;
+use std::collections::BinaryHeap;
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq)]
 struct Node {
     vertex: usize,
-    cost: u32,
+    distance: u32,
 }
 
-impl Ord for Node {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        other.cost.cmp(&self.cost)
+impl PartialEq for Node {
+    fn eq(&self, other: &Self) -> bool {
+        self.distance.eq(&other.distance)
     }
 }
 
 impl PartialOrd for Node {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
-fn ucs(graph: &[HashMap<usize, u32>], start: usize, goal: usize) -> Vec<usize> {
-    let mut priority_queue = BinaryHeap::new();
-    let mut visited = vec![false; graph.len()];
-    let mut cost_so_far = vec![u32::MAX; graph.len()];
-    let mut came_from = vec![None; graph.len()];
+impl Ord for Node {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.distance.cmp(&self.distance)
+    }
+}
 
+fn dijkstra(graph: &[Vec<(usize, u32)>], start: usize) -> Vec<u32> {
+    let mut distances = vec![u32::MAX; graph.len()];
+    let mut priority_queue = BinaryHeap::new();
+
+    distances[start] = 0;
     priority_queue.push(Node {
         vertex: start,
-        cost: 0,
+        distance: 0,
     });
-    cost_so_far[start] = 0;
 
-    while let Some(node) = priority_queue.pop() {
-        let vertex = node.vertex;
-
-        if vertex == goal {
-            break;
+    while let Some(Node { vertex, distance }) = priority_queue.pop() {
+        if distance > distances[vertex] {
+            continue;
         }
 
-        if !visited[vertex] {
-            visited[vertex] = true;
+        for &(neighbor, weight) in &graph[vertex] {
+            let new_distance = distance + weight;
 
-            if let Some(neighbors) = graph.get(vertex) {
-                for (neighbor, cost) in neighbors {
-                    let new_cost = cost_so_far[vertex] + cost;
-
-                    if new_cost < cost_so_far[*neighbor] {
-                        cost_so_far[*neighbor] = new_cost;
-                        priority_queue.push(Node {
-                            vertex: *neighbor,
-                            cost: new_cost,
-                        });
-                        came_from[*neighbor] = Some(vertex);
-                    }
-                }
+            if new_distance < distances[neighbor] {
+                distances[neighbor] = new_distance;
+                priority_queue.push(Node {
+                    vertex: neighbor,
+                    distance: new_distance,
+                });
             }
         }
     }
 
-    reconstruct_path(start, goal, &came_from)
+    distances
 }
 
-fn reconstruct_path(start: usize, goal: usize, came_from: &[Option<usize>]) -> Vec<usize> {
-    let mut path = vec![goal];
-    let mut current = goal;
+fn main() {
+    let graph = vec![
+        vec![(1, 4), (2, 1)],
+        vec![(3, 1)],
+        vec![(1, 2), (3, 5)],
+        vec![],
+    ];
 
-    while let Some(prev) = came_from[current] {
-        path.push(prev);
-        current = prev;
+    let distances = dijkstra(&graph, 0);
+
+    for (vertex, distance) in distances.iter().enumerate() {
+        println!("Distance from 0 to {}: {}", vertex, distance);
     }
-
-    path.reverse();
-    path
 }
