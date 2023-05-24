@@ -1,4 +1,4 @@
-//Uniform Cost Search in C# (C Sharp)
+// Dijkstra`s Algorithm in C# (C Sharp)
 
 using System;
 using System.Collections.Generic;
