@@ -1,35 +1,41 @@
 # Uniform Cost Search in R Language
 
-library(pqueue)
-
 dijkstra <- function(graph, start) {
-  distances <- rep(Inf, length(graph))
+  n <- length(graph)
+  distances <- rep(Inf, n)
   distances[start] <- 0
-  pq <- pqueue$new(order = "min")
-  pq$insert(start, 0)
+  visited <- rep(FALSE, n)
 
-  while (!pq$is_empty()) {
-    node <- pq$pop()
-    current_node <- node$elem
-    current_distance <- node$priority
+  while (any(!visited)) {
+    current <- which.min(distances[!visited])
+    visited[current] <- TRUE
 
-    if (current_distance > distances[current_node]) {
-      next
+    neighbors <- graph[[current]]
+    unvisited <- setdiff(names(neighbors), names(distances))
+
+    if (length(unvisited) > 0) {
+      distances[unvisited] <- Inf
     }
 
-    neighbors <- graph[[current_node]]
-
-    for (i in seq_along(neighbors$vertex)) {
-      neighbor_node <- neighbors$vertex[i]
-      neighbor_distance <- neighbors$distance[i]
-      distance <- current_distance + neighbor_distance
-
-      if (distance < distances[neighbor_node]) {
-        distances[neighbor_node] <- distance
-        pq$insert(neighbor_node, distance)
+    for (neighbor in names(neighbors)) {
+      if (distances[current] + neighbors[[neighbor]] < distances[neighbor]) {
+        distances[neighbor] <- distances[current] + neighbors[[neighbor]]
       }
     }
   }
 
   distances
+}
+
+graph <- list(
+  list("1" = 4, "2" = 1),
+  list("3" = 1),
+  list("1" = 2, "3" = 5),
+  list()
+)
+
+distances <- dijkstra(graph, 1)
+
+for (i in seq_along(distances)) {
+  cat("Distance from 1 to", i, ":", distances[i], "\n")
 }
