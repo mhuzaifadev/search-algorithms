@@ -7,7 +7,7 @@ def dijkstra(graph, start):
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
 
-    # Priority queue to store nodes with their minimum distances
+    # Priority queue to store nodes with their distances
     priority_queue = [(0, start)]
 
     while priority_queue:
