@@ -1,57 +1,59 @@
 // Uniform Cost Search in C++
 
 #include <iostream>
-#include <queue>
+#include <unordered_map>
 #include <vector>
-#include <limits>
+#include <unordered_set>
 
 using namespace std;
 
-vector<int> dijkstra(const vector<vector<pair<int, int>>>& graph, int start) {
-    int n = graph.size();
-    vector<int> distances(n, numeric_limits<int>::max());
-    distances[start] = 0;
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    pq.emplace(0, start);
-
-    while (!pq.empty()) {
-        int currentDistance = pq.top().first;
-        int currentNode = pq.top().second;
-        pq.pop();
-
-        if (currentDistance > distances[currentNode]) {
-            continue;
-        }
-
-        for (const auto& neighbor : graph[currentNode]) {
-            int neighborNode = neighbor.first;
-            int weight = neighbor.second;
-            int distance = currentDistance + weight;
-
-            if (distance < distances[neighborNode]) {
-                distances[neighborNode] = distance;
-                pq.emplace(distance, neighborNode);
+bool dls(const unordered_map<string, vector<string>>& graph, const string& node, const string& target, int depth, unordered_set<string>& visited) {
+    if (depth == 0 && node == target) {
+        return true;
+    }
+    if (depth > 0) {
+        visited.insert(node);
+        const vector<string>& neighbors = graph.at(node);
+        for (const string& neighbor : neighbors) {
+            if (visited.find(neighbor) == visited.end()) {
+                if (dls(graph, neighbor, target, depth - 1, visited)) {
+                    return true;
+                }
             }
         }
     }
+    return false;
+}
 
-    return distances;
+bool iddfs(const unordered_map<string, vector<string>>& graph, const string& start, const string& target, int maxDepth) {
+    for (int depth = 0; depth <= maxDepth; depth++) {
+        unordered_set<string> visited;
+        if (dls(graph, start, target, depth, visited)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 int main() {
-    int n = 4;
-    vector<vector<pair<int, int>>> graph(n);
-    graph[0] = {{1, 4}, {2, 1}};
-    graph[1] = {{3, 1}};
-    graph[2] = {{1, 2}, {3, 5}};
-    graph[3] = {};
+    unordered_map<string, vector<string>> graph = {
+        {"A", {"B", "C"}},
+        {"B", {"D", "E"}},
+        {"C", {"F"}},
+        {"D", {}},
+        {"E", {"F"}},
+        {"F", {}}
+    };
 
-    vector<int> distances = dijkstra(graph, 0);
+    string start = "A";
+    string target = "F";
+    int maxDepth = 3;
 
-    for (int i = 0; i < n; ++i) {
-        cout << "Distance from 0 to " << i << " : " << distances[i] << endl;
+    if (iddfs(graph, start, target, maxDepth)) {
+        cout << "Path exists" << endl;
+    } else {
+        cout << "Path does not exist" << endl;
     }
 
     return 0;
 }
-
