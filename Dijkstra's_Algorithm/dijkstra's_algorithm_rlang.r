@@ -1,4 +1,4 @@
-# Uniform Cost Search in R Language
+# Dijkstra`s Algorithm in R Language
 
 dijkstra <- function(graph, start) {
   n <- length(graph)
