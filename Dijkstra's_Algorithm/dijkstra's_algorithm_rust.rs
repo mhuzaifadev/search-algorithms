@@ -2,16 +2,17 @@
 
 use std::cmp::Ordering;
 use std::collections::BinaryHeap;
+use std::usize;
 
-#[derive(Debug, Eq)]
+#[derive(Eq, PartialEq)]
 struct Node {
     vertex: usize,
-    distance: u32,
+    distance: i32,
 }
 
-impl PartialEq for Node {
-    fn eq(&self, other: &Self) -> bool {
-        self.distance.eq(&other.distance)
+impl Ord for Node {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.distance.cmp(&self.distance)
     }
 }
 
@@ -21,35 +22,34 @@ impl PartialOrd for Node {
     }
 }
 
-impl Ord for Node {
-    fn cmp(&self, other: &Self) -> Ordering {
-        other.distance.cmp(&self.distance)
-    }
-}
-
-fn dijkstra(graph: &[Vec<(usize, u32)>], start: usize) -> Vec<u32> {
-    let mut distances = vec![u32::MAX; graph.len()];
-    let mut priority_queue = BinaryHeap::new();
-
+fn dijkstra(graph: &[Vec<(usize, i32)>], start: usize) -> Vec<i32> {
+    let n = graph.len();
+    let mut distances = vec![i32::MAX; n];
     distances[start] = 0;
+
+    let mut priority_queue = BinaryHeap::new();
     priority_queue.push(Node {
         vertex: start,
         distance: 0,
     });
 
-    while let Some(Node { vertex, distance }) = priority_queue.pop() {
-        if distance > distances[vertex] {
+    while let Some(current) = priority_queue.pop() {
+        let current_node = current.vertex;
+
+        if current.distance > distances[current_node] {
             continue;
         }
 
-        for &(neighbor, weight) in &graph[vertex] {
-            let new_distance = distance + weight;
+        for neighbor in &graph[current_node] {
+            let neighbor_node = neighbor.0;
+            let weight = neighbor.1;
+            let distance = distances[current_node] + weight;
 
-            if new_distance < distances[neighbor] {
-                distances[neighbor] = new_distance;
+            if distance < distances[neighbor_node] {
+                distances[neighbor_node] = distance;
                 priority_queue.push(Node {
-                    vertex: neighbor,
-                    distance: new_distance,
+                    vertex: neighbor_node,
+                    distance,
                 });
             }
         }
@@ -59,6 +59,7 @@ fn dijkstra(graph: &[Vec<(usize, u32)>], start: usize) -> Vec<u32> {
 }
 
 fn main() {
+    let n = 4;
     let graph = vec![
         vec![(1, 4), (2, 1)],
         vec![(3, 1)],
