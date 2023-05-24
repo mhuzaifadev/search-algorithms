@@ -1,41 +1,49 @@
 # Uniform Cost Search in R Language
 
-dijkstra <- function(graph, start) {
-  n <- length(graph)
-  distances <- rep(Inf, n)
-  distances[start] <- 0
-  visited <- rep(FALSE, n)
-
-  while (any(!visited)) {
-    current <- which.min(distances[!visited])
-    visited[current] <- TRUE
-
-    neighbors <- graph[[current]]
-    unvisited <- setdiff(names(neighbors), names(distances))
-
-    if (length(unvisited) > 0) {
-      distances[unvisited] <- Inf
-    }
-
-    for (neighbor in names(neighbors)) {
-      if (distances[current] + neighbors[[neighbor]] < distances[neighbor]) {
-        distances[neighbor] <- distances[current] + neighbors[[neighbor]]
+dls <- function(graph, node, target, depth, visited) {
+  if (depth == 0 && node == target) {
+    return(TRUE)
+  }
+  if (depth > 0) {
+    visited <- append(visited, node)
+    neighbors <- graph[[node]]
+    for (neighbor in neighbors) {
+      if (!(neighbor %in% visited)) {
+        if (dls(graph, neighbor, target, depth-1, visited)) {
+          return(TRUE)
+        }
       }
     }
   }
-
-  distances
+  return(FALSE)
 }
 
+iddfs <- function(graph, start, target, maxDepth) {
+  for (depth in 0:maxDepth) {
+    visited <- character(0)
+    if (dls(graph, start, target, depth, visited)) {
+      return(TRUE)
+    }
+  }
+  return(FALSE)
+}
+
+# Example usage
 graph <- list(
-  list("1" = 4, "2" = 1),
-  list("3" = 1),
-  list("1" = 2, "3" = 5),
-  list()
+  'A' = c('B', 'C'),
+  'B' = c('D', 'E'),
+  'C' = c('F'),
+  'D' = character(0),
+  'E' = c('F'),
+  'F' = character(0)
 )
 
-distances <- dijkstra(graph, 1)
+start <- 'A'
+target <- 'F'
+maxDepth <- 3
 
-for (i in seq_along(distances)) {
-  cat("Distance from 1 to", i, ":", distances[i], "\n")
+if (iddfs(graph, start, target, maxDepth)) {
+  print("Path exists")
+} else {
+  print("Path does not exist")
 }
