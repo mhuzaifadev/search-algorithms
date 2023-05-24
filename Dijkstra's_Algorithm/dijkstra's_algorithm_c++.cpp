@@ -1,4 +1,4 @@
-// Uniform Cost Search in C++
+// Dijkstra`s Algorithm in C++
 
 #include <iostream>
 #include <queue>
