@@ -1,4 +1,4 @@
-// Uniform Cost Search in Java
+// Dijkstra`s Algorithm in Java
 
 import java.util.*;
 
