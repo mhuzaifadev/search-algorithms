@@ -1,4 +1,4 @@
-// Uniform Cost Search in JavaScript
+// Dijkstra`s Algorithm in JavaScript
 
 class PriorityQueue {
   constructor(comparator = (a, b) => a.priority < b.priority) {
