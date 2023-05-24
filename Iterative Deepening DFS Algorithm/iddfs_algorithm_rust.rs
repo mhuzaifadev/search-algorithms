@@ -1,75 +1,52 @@
 // Uniform Cost Search in Rust
 
-use std::cmp::Ordering;
-use std::collections::BinaryHeap;
-use std::usize;
+use std::collections::HashSet;
 
-#[derive(Eq, PartialEq)]
-struct Node {
-    vertex: usize,
-    distance: i32,
-}
-
-impl Ord for Node {
-    fn cmp(&self, other: &Self) -> Ordering {
-        other.distance.cmp(&self.distance)
+fn dls(graph: &std::collections::HashMap<&str, Vec<&str>>, node: &str, target: &str, depth: i32, visited: &mut HashSet<&str>) -> bool {
+    if depth == 0 && node == target {
+        return true;
     }
-}
-
-impl PartialOrd for Node {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-fn dijkstra(graph: &[Vec<(usize, i32)>], start: usize) -> Vec<i32> {
-    let n = graph.len();
-    let mut distances = vec![i32::MAX; n];
-    distances[start] = 0;
-
-    let mut priority_queue = BinaryHeap::new();
-    priority_queue.push(Node {
-        vertex: start,
-        distance: 0,
-    });
-
-    while let Some(current) = priority_queue.pop() {
-        let current_node = current.vertex;
-
-        if current.distance > distances[current_node] {
-            continue;
-        }
-
-        for neighbor in &graph[current_node] {
-            let neighbor_node = neighbor.0;
-            let weight = neighbor.1;
-            let distance = distances[current_node] + weight;
-
-            if distance < distances[neighbor_node] {
-                distances[neighbor_node] = distance;
-                priority_queue.push(Node {
-                    vertex: neighbor_node,
-                    distance,
-                });
+    if depth > 0 {
+        visited.insert(node);
+        if let Some(neighbors) = graph.get(node) {
+            for neighbor in neighbors {
+                if !visited.contains(neighbor) {
+                    if dls(graph, neighbor, target, depth - 1, visited) {
+                        return true;
+                    }
+                }
             }
         }
     }
+    false
+}
 
-    distances
+fn iddfs(graph: &std::collections::HashMap<&str, Vec<&str>>, start: &str, target: &str, max_depth: i32) -> bool {
+    for depth in 0..=max_depth {
+        let mut visited = HashSet::new();
+        if dls(graph, start, target, depth, &mut visited) {
+            return true;
+        }
+    }
+    false
 }
 
 fn main() {
-    let n = 4;
-    let graph = vec![
-        vec![(1, 4), (2, 1)],
-        vec![(3, 1)],
-        vec![(1, 2), (3, 5)],
-        vec![],
-    ];
+    let mut graph = std::collections::HashMap::new();
+    graph.insert("A", vec!["B", "C"]);
+    graph.insert("B", vec!["D", "E"]);
+    graph.insert("C", vec!["F"]);
+    graph.insert("D", vec![]);
+    graph.insert("E", vec!["F"]);
+    graph.insert("F", vec![]);
 
-    let distances = dijkstra(&graph, 0);
+    let start = "A";
+    let target = "F";
+    let max_depth = 3;
 
-    for (vertex, distance) in distances.iter().enumerate() {
-        println!("Distance from 0 to {}: {}", vertex, distance);
+    if iddfs(&graph, start, target, max_depth) {
+        println!("Path exists");
+    } else {
+        println!("Path does not exist");
     }
 }
