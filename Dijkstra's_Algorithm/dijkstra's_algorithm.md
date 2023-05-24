@@ -1,4 +1,4 @@
-# **Uniform-Cost Search (UCS) Algorithm**
+# ** Dijkstra`s Algorithm **
 
     Create a priority queue to store nodes with their distances.
     
