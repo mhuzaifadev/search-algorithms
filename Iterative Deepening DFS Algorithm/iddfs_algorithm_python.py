@@ -1,29 +1,38 @@
 # Uniform Cost Search in Python
 
-import heapq
+def iddfs(graph, start, target, max_depth):
+    for depth in range(max_depth+1):
+        visited = set()
+        if dls(graph, start, target, depth, visited):
+            return True
+    return False
 
-def dijkstra(graph, start):
-    # Initialize distances with infinity except for the start node
-    distances = {node: float('inf') for node in graph}
-    distances[start] = 0
+def dls(graph, node, target, depth, visited):
+    if depth == 0 and node == target:
+        return True
+    if depth > 0:
+        visited.add(node)
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                if dls(graph, neighbor, target, depth-1, visited):
+                    return True
+    return False
 
-    # Priority queue to store nodes with their distances
-    priority_queue = [(0, start)]
+# Example usage
+graph = {
+    'A': ['B', 'C'],
+    'B': ['D', 'E'],
+    'C': ['F'],
+    'D': [],
+    'E': ['F'],
+    'F': []
+}
 
-    while priority_queue:
-        current_distance, current_node = heapq.heappop(priority_queue)
+start = 'A'
+target = 'F'
+max_depth = 3
 
-        # Skip if the current node has already been visited
-        if current_distance > distances[current_node]:
-            continue
-
-        # Explore neighbors of the current node
-        for neighbor, weight in graph[current_node].items():
-            distance = current_distance + weight
-
-            # Update distance if a shorter path is found
-            if distance < distances[neighbor]:
-                distances[neighbor] = distance
-                heapq.heappush(priority_queue, (distance, neighbor))
-
-    return distances
+if iddfs(graph, start, target, max_depth):
+    print("Path exists")
+else:
+    print("Path does not exist")
