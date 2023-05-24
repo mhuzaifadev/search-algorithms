@@ -1,4 +1,4 @@
-// Uniform Cost Search in Swift
+// Dijkstra`s Algorithm in Swift
 
 import Foundation
 
