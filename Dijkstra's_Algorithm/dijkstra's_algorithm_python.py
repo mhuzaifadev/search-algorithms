@@ -1,4 +1,4 @@
-# Uniform Cost Search in Python
+# Dijkstra`s Algorithm in Python
 
 import heapq
 
