@@ -1,4 +1,4 @@
-// Uniform Cost Search in Rust
+// Dijkstra`s Algorithm in Rust
 
 use std::cmp::Ordering;
 use std::collections::BinaryHeap;
