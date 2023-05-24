@@ -2,71 +2,54 @@
 
 import java.util.*;
 
-public class Dijkstra {
-    public static Map<Integer, Integer> dijkstra(Map<Integer, Map<Integer, Integer>> graph, int start) {
-        Map<Integer, Integer> distances = new HashMap<>();
-        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
-        Set<Integer> visited = new HashSet<>();
-
-        // Initialize distances with infinity except for the start node
-        for (int node : graph.keySet()) {
-            distances.put(node, Integer.MAX_VALUE);
-        }
-        distances.put(start, 0);
-
-        priorityQueue.offer(new Node(start, 0));
-
-        while (!priorityQueue.isEmpty()) {
-            Node current = priorityQueue.poll();
-            int currentNode = current.getNode();
-
-            // Skip if the current node has already been visited
-            if (visited.contains(currentNode)) {
-                continue;
+public class IDDFS {
+    public static boolean iddfs(Map<String, List<String>> graph, String start, String target, int maxDepth) {
+        for (int depth = 0; depth <= maxDepth; depth++) {
+            Set<String> visited = new HashSet<>();
+            if (dls(graph, start, target, depth, visited)) {
+                return true;
             }
+        }
+        return false;
+    }
 
-            visited.add(currentNode);
-
-            // Explore neighbors of the current node
-            for (Map.Entry<Integer, Integer> neighbor : graph.get(currentNode).entrySet()) {
-                int neighborNode = neighbor.getKey();
-                int weight = neighbor.getValue();
-                int distance = distances.get(currentNode) + weight;
-
-                // Update distance if a shorter path is found
-                if (distance < distances.get(neighborNode)) {
-                    distances.put(neighborNode, distance);
-                    priorityQueue.offer(new Node(neighborNode, distance));
+    public static boolean dls(Map<String, List<String>> graph, String node, String target, int depth, Set<String> visited) {
+        if (depth == 0 && node.equals(target)) {
+            return true;
+        }
+        if (depth > 0) {
+            visited.add(node);
+            List<String> neighbors = graph.get(node);
+            if (neighbors != null) {
+                for (String neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        if (dls(graph, neighbor, target, depth - 1, visited)) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
-
-        return distances;
+        return false;
     }
 
-    private static class Node implements Comparable<Node> {
-        private final int node;
-        private final int distance;
+    public static void main(String[] args) {
+        Map<String, List<String>> graph = new HashMap<>();
+        graph.put("A", Arrays.asList("B", "C"));
+        graph.put("B", Arrays.asList("D", "E"));
+        graph.put("C", Arrays.asList("F"));
+        graph.put("D", new ArrayList<>());
+        graph.put("E", Arrays.asList("F"));
+        graph.put("F", new ArrayList<>());
 
-        public Node(int node, int distance) {
-            this.node = node;
-            this.distance = distance;
-        }
+        String start = "A";
+        String target = "F";
+        int maxDepth = 3;
 
-        public int getNode() {
-            return node;
-        }
-
-        public int getDistance() {
-            return distance;
-        }
-
-        @Override
-        public int compareTo(Node other) {
-            return Integer.compare(this.distance, other.distance);
+        if (iddfs(graph, start, target, maxDepth)) {
+            System.out.println("Path exists");
+        } else {
+            System.out.println("Path does not exist");
         }
     }
 }
-
-
-
