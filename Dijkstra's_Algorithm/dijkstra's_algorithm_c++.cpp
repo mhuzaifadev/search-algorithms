@@ -3,50 +3,34 @@
 #include <iostream>
 #include <queue>
 #include <vector>
-#include <unordered_map>
 #include <limits>
 
 using namespace std;
 
-class Node {
-public:
-    int vertex;
-    int distance;
-
-    Node(int v, int d) : vertex(v), distance(d) {}
-
-    bool operator>(const Node& other) const {
-        return distance > other.distance;
-    }
-};
-
-unordered_map<int, int> dijkstra(unordered_map<int, unordered_map<int, int>>& graph, int start) {
-    unordered_map<int, int> distances;
-    priority_queue<Node, vector<Node>, greater<Node>> pq;
-
-    for (const auto& pair : graph) {
-        distances[pair.first] = numeric_limits<int>::max();
-    }
+vector<int> dijkstra(const vector<vector<pair<int, int>>>& graph, int start) {
+    int n = graph.size();
+    vector<int> distances(n, numeric_limits<int>::max());
     distances[start] = 0;
-
-    pq.emplace(start, 0);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.emplace(0, start);
 
     while (!pq.empty()) {
-        Node current = pq.top();
+        int currentDistance = pq.top().first;
+        int currentNode = pq.top().second;
         pq.pop();
 
-        if (current.distance > distances[current.vertex]) {
+        if (currentDistance > distances[currentNode]) {
             continue;
         }
 
-        for (const auto& neighbor : graph[current.vertex]) {
-            int neighborVertex = neighbor.first;
+        for (const auto& neighbor : graph[currentNode]) {
+            int neighborNode = neighbor.first;
             int weight = neighbor.second;
-            int distance = current.distance + weight;
+            int distance = currentDistance + weight;
 
-            if (distance < distances[neighborVertex]) {
-                distances[neighborVertex] = distance;
-                pq.emplace(neighborVertex, distance);
+            if (distance < distances[neighborNode]) {
+                distances[neighborNode] = distance;
+                pq.emplace(distance, neighborNode);
             }
         }
     }
@@ -55,17 +39,19 @@ unordered_map<int, int> dijkstra(unordered_map<int, unordered_map<int, int>>& gr
 }
 
 int main() {
-    unordered_map<int, unordered_map<int, int>> graph;
+    int n = 4;
+    vector<vector<pair<int, int>>> graph(n);
     graph[0] = {{1, 4}, {2, 1}};
     graph[1] = {{3, 1}};
     graph[2] = {{1, 2}, {3, 5}};
     graph[3] = {};
 
-    unordered_map<int, int> distances = dijkstra(graph, 0);
+    vector<int> distances = dijkstra(graph, 0);
 
-    for (const auto& pair : distances) {
-        cout << "Distance from 0 to " << pair.first << " : " << pair.second << endl;
+    for (int i = 0; i < n; ++i) {
+        cout << "Distance from 0 to " << i << " : " << distances[i] << endl;
     }
 
     return 0;
 }
+
