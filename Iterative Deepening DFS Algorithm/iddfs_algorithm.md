@@ -1,21 +1,32 @@
-# **Uniform-Cost Search (UCS) Algorithm**
+# **Iterative Deepening DFS (IDDFS) Algorithm**
 
-    Create a priority queue to store nodes with their distances.
-    
-    Initialize the distance of the start node to 0 and all other nodes to infinity.
-    
-    Add the start node to the priority queue.
-    
-    Repeat until the priority queue is empty:
-    
-        Remove the node with the minimum distance from the priority queue.
-        
-        If the removed node has already been visited, skip it.
-        
-        Mark the node as visited.
-        
-        Update the distances of its neighboring nodes if a shorter path is found.
-        
-        Add the neighboring nodes to the priority queue if their distances are updated.
-    
-    Return the distances of all nodes.
+**Input:**
+
+    graph: a graph represented as an adjacency list
+    start: the starting node
+    target: the target node
+    maxDepth: the maximum depth to explore
+
+**Output:**
+
+    Returns true if a path from start to target exists within the specified maximum depth, and false otherwise.
+
+**Pseudocode:**
+
+    function IDDFS(graph, start, target, maxDepth):
+        for depth in range(0, maxDepth+1):
+            visited = empty set
+            if DLS(graph, start, target, depth, visited):
+                return true
+        return false
+
+    function DLS(graph, node, target, depth, visited):
+        if depth == 0 and node == target:
+            return true
+        if depth > 0:
+            visited.add(node)
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    if DLS(graph, neighbor, target, depth-1, visited):
+                        return true
+        return false
