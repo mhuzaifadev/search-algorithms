@@ -1,4 +1,4 @@
-# Uniform Cost Search in Python
+# Iterative Deepening DFS Algorithm in Python
 
 def iddfs(graph, start, target, max_depth):
     for depth in range(max_depth+1):
