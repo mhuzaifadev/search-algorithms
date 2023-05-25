@@ -1,4 +1,4 @@
-//Uniform Cost Search in C# (C Sharp)
+//Iterative Deepening DFS Algorithm in C# (C Sharp)
 
 using System;
 using System.Collections.Generic;
