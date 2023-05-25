@@ -1,4 +1,4 @@
-// Uniform Cost Search in Java
+// Iterative Deepening DFS Algorithm in Java
 
 import java.util.*;
 
