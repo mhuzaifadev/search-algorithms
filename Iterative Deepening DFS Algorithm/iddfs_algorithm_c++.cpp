@@ -1,4 +1,4 @@
-// Uniform Cost Search in C++
+// Iterative Deepening DFS Algorithm in C++
 
 #include <iostream>
 #include <unordered_map>
