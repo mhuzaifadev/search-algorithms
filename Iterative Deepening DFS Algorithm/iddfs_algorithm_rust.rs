@@ -1,4 +1,4 @@
-// Uniform Cost Search in Rust
+// Iterative Deepening DFS Algorithm in Rust
 
 use std::collections::HashSet;
 
