@@ -1,4 +1,4 @@
-# Uniform Cost Search in R Language
+# Iterative Deepening DFS Algorithm in R Language
 
 dls <- function(graph, node, target, depth, visited) {
   if (depth == 0 && node == target) {
