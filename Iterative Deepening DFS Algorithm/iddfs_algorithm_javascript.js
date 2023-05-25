@@ -1,4 +1,4 @@
-// Uniform Cost Search in JavaScript
+// Iterative Deepening DFS Algorithm in JavaScript
 
 function iddfs(graph, start, target, maxDepth) {
   for (let depth = 0; depth <= maxDepth; depth++) {
