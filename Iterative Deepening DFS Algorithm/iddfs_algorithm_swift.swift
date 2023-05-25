@@ -1,4 +1,4 @@
-// Uniform Cost Search in Swift
+// Iterative Deepening DFS Algorithm in Swift
 
 func iddfs(graph: [String: [String]], start: String, target: String, maxDepth: Int) -> Bool {
     for depth in 0...maxDepth {
