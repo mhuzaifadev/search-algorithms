@@ -1,5 +1,6 @@
 # **Search Algorithms Repository**
 
+
 <table style="border-collapse: collapse; border: nonenone!important;">
   <tr>
     <td style="border: none; width: 40%;">
@@ -25,7 +26,8 @@
 | **Uniform-Cost Search (UCS)**          | A graph search algorithm that explores the least-cost path by assigning a cost to each edge.                           | O((V + E) log V) |
 | **Dijkstra's Algorithm**              | A popular algorithm for finding the shortest path between nodes in a graph with non-negative edge weights.             | O((V + E) log V) |
 | **Iterative Deepening DFS (IDDFS)**    | A combination of depth-first search and breadth-first search that gradually increases the depth limit until the goal is found. | O(b^d) |
-| **Bidirectional Search**              | An algorithm that runs two simultaneous searches, one forward and one backward, until they meet.                      | O(b^(d/2)) |
+
+<!-- | **Bidirectional Search**              | An algorithm that runs two simultaneous searches, one forward and one backward, until they meet.                      | O(b^(d/2)) |
 | **Jump Search**                       | A search algorithm that works on sorted arrays by making fixed steps and performing linear search in the bounded range. | O(sqrt(n)) |
 | **Interpolation Search**              | A search algorithm that uses numerical estimates to find an appropriate position to search in a sorted array.           | O(log log n) |
 | **Exponential Search**                | An algorithm that exponentially increases the search range until a range containing the target element is found.        | O(log n)  |
@@ -37,7 +39,7 @@
 | **Ant Colony Optimization**           | An optimization algorithm that models the behavior of ant colonies in nature.                                          | Depends on the problem |
 | **Particle Swarm Optimization**       | An optimization algorithm inspired by the collective behavior of swarms.                                               | Depends on the problem |
 | **Tabu Search**                       | A metaheuristic search algorithm that uses memory structures to escape local optima and explore the search space more effectively. | Depends on the problem |
-
+ -->
 
 ## Usage
 
