@@ -47,7 +47,7 @@ Each algorithm is implemented in multiple programming languages within the repos
 
 ## Contribution
 
-Contributions to the repository are welcome! If you have an algorithm implementation in a programming language that is not currently included or you would like to improve an existing implementation, feel free to open a pull request.
+Contributions to the repository are welcome! If you have an algorithm implemented in a programming language that is not currently included or you would like to improve an existing implementation, feel free to open a pull request.
 
 Please ensure that your code follows the repository's coding guidelines and includes appropriate documentation and test cases.
 
